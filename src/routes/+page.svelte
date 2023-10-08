@@ -32,6 +32,7 @@
 	rel="stylesheet"
 />
 
+
 <body
 	on:mousemove={handleMouseMove}
 	role="presentation"
@@ -70,24 +71,27 @@
 		padding: 0;
 	}
 
-	.hue {
-		position: fixed;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		z-index: 20; /* z-index higher than the navbar */
+	@media (min-width: 769px) {
+		.hue {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 20; /* z-index higher than the navbar */
 
-		/* Radial gradient */
-		background-image: radial-gradient(
-			circle 200px at var(--x) var(--y),
-			rgba(128, 0, 128, 0.375),
-			transparent
-		);
-		pointer-events: none; /* Ensures the div doesn't block interactions */
+			/* Radial gradient */
+			background-image: radial-gradient(
+				circle 200px at var(--x) var(--y),
+				rgba(128, 0, 128, 0.375),
+				transparent
+			);
+			pointer-events: none; /* Ensures the div doesn't block interactions */
+		}
 	}
 	.container {
 		max-width: 1200px;
+		padding: 2rem;
 		margin: 0 auto;
 	}
 	.title {

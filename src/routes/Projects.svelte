@@ -8,7 +8,13 @@
 
 <style>
     section {
-        padding: 2rem 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 2px solid #0df2c9; /* Neon cyan border */
+        padding: 2rem;
+        margin-bottom: 1rem;
+    }
+    h2 {
+        color: #ff2079; /* Neon pink for headings */
     }
     .project {
         border: 1px solid #eee;
