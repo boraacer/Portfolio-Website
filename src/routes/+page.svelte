@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import Navbar from './Navbar.svelte';
+	import Home from './Home.svelte';
 	import About from './About.svelte';
 	import Projects from './Projects.svelte';
 	import Contact from './Contact.svelte';
@@ -12,6 +15,14 @@
 		y = event.clientY;
 		document.body.style.setProperty('--x', `${x}px`);
 		document.body.style.setProperty('--y', `${y}px`);
+	}
+
+	const sections: string[] = ['Home', 'Projects', 'About Me', 'Contact'];
+	let activeTab: string = sections[0]; // Initialize the active tab
+
+	// Function to handle tab switching
+	function switchTab(tab: string): void {
+		activeTab = tab;
 	}
 </script>
 
@@ -29,15 +40,22 @@
 	<div class="hue" />
 	<div class="title fade-in">Bora Acer's Portfolio</div>
 	<!-- Apply fade-in -->
-	<Navbar />
-	<!-- Apply slide-in -->
+	<Navbar {sections} {switchTab} />
 	<div class="container">
-		<About />
-		<!-- Apply slide-in -->
-		<Projects />
-		<!-- Apply slide-in -->
-		<Contact />
-		<!-- Apply slide-in -->
+		{#if activeTab === 'About Me'}
+			<About />
+		{/if}
+		{#if activeTab === 'Projects'}
+			<Projects />
+		{/if}
+		{#if activeTab === 'Contact'}
+			<Contact />
+		{/if}
+		{#if activeTab === 'Home'}
+			<Home />
+		{/if}
+		<!-- Cond
+		<!-- Conditional rendering of content based on the activeTab -->
 	</div>
 </body>
 
@@ -79,8 +97,7 @@
 		color: #0df2c9; /* Neon cyan color for the title */
 		padding-top: 4rem;
 		margin-bottom: 2rem;
-        text-shadow: 0 0 3px #ff2079, 0 0 6px #ff2079, 0 0 9px #ff2079;
-        user-select: none;
+		text-shadow: 0 0 3px #ff2079, 0 0 6px #ff2079, 0 0 9px #ff2079;
+		user-select: none;
 	}
-
 </style>

@@ -8,14 +8,8 @@
     h2 {
         color: #ff2079; /* Neon pink for headings */
     }
-    a {
-        color: #0df2c9; /* Neon cyan color for links */
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    a:hover {
-        color: #ff2079; /* Neon pink color on hover for links */
-    }
+
+
 </style>
 
 
