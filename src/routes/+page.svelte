@@ -16,6 +16,10 @@
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+	rel="stylesheet"
+/>
 
 <body
 	on:mousemove={handleMouseMove}
@@ -70,10 +74,13 @@
 	}
 	.title {
 		text-align: center;
-		font-size: 3rem;
+		font-family: 'Press Start 2P', cursive;
+		font-size: 2.5rem; /* Adjusted size for better appearance with this font */
 		color: #0df2c9; /* Neon cyan color for the title */
-		padding-top: 2rem;
-		margin-bottom: 2rem; /* Space between the title and the navbar */
-		font-family: 'Orbitron', sans-serif; /* Using Orbitron font */
+		padding-top: 4rem;
+		margin-bottom: 2rem;
+        text-shadow: 0 0 3px #ff2079, 0 0 6px #ff2079, 0 0 9px #ff2079;
+        user-select: none;
 	}
+
 </style>
