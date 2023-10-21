@@ -60,6 +60,8 @@
 	}
 
 	logAccess();
+
+
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
