@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import Navbar from './Navbar.svelte';
 	import Home from './Home.svelte';
 	import About from './About.svelte';
@@ -24,6 +22,44 @@
 	function switchTab(tab: string): void {
 		activeTab = tab;
 	}
+
+	async function getPublicIP(): Promise<string> {
+		try {
+			const response = await fetch('https://api.ipify.org?format=json');
+			if (response.ok) {
+				const data = await response.json();
+				return data.ip;
+			} else {
+				throw new Error('Failed to fetch IP address');
+			}
+		} catch (error) {
+			console.error('Error fetching public IP:', error);
+			throw error;
+		}
+	}
+
+	async function logAccess() {
+		if (typeof navigator !== 'undefined') {
+			// Only execute this code on the client-side
+			const response = await fetch('/api/accesslogs', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					ip_address: await getPublicIP() // Replace with actual IP address
+				})
+			});
+
+			if (response.ok) {
+				console.log('Access logged successfully');
+			} else {
+				console.error('Failed to log access');
+			}
+		}
+	}
+
+	logAccess();
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
@@ -31,7 +67,6 @@
 	href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
 	rel="stylesheet"
 />
-
 
 <body
 	on:mousemove={handleMouseMove}
@@ -55,8 +90,6 @@
 		{#if activeTab === 'Home'}
 			<Home />
 		{/if}
-		<!-- Cond
-		<!-- Conditional rendering of content based on the activeTab -->
 	</div>
 </body>
 
