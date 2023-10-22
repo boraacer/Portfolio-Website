@@ -10,6 +10,8 @@
 		try {
 			const response = await axios.get(url);
 			contactContent = snarkdown(response.data);
+			console.log(contactContent)
+
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(`Error fetching the contact content: ${error.message}`);
@@ -22,7 +24,7 @@
 	fetchContactContent(); // Invoke the function to fetch the content
 </script>
 
-<section id="contact" class="slide-in">
+<section class="slide-in">
 	<div class="markdown-content">
 		{@html contactContent}
 	</div>

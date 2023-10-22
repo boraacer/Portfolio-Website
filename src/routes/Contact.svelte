@@ -1,12 +1,13 @@
 <script lang="ts">
 	import axios from 'axios';
 	import snarkdown from 'snarkdown';
+	import { onMount } from 'svelte';
 
 	let contactContent: string = '';
 	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
 
 	async function fetchContactContent() {
-        const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/ContactMe.md`;
+		const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/ContactMe.md`;
 		try {
 			const response = await axios.get(url);
 			contactContent = snarkdown(response.data);
@@ -19,12 +20,18 @@
 		}
 	}
 
-	fetchContactContent(); // Invoke the function to fetch the content
+	onMount(async () => {
+		await fetchContactContent();
+	});
 </script>
 
-<section id="contact" class="slide-in">
+<section class="slide-in">
 	<div class="markdown-content">
-		{@html contactContent}
+		{#if contactContent}
+			{@html contactContent}
+		{:else}
+			<p>Loading...</p>
+		{/if}
 	</div>
 </section>
 
@@ -36,6 +43,10 @@
 		margin-bottom: 1rem;
 		border-radius: 10px;
 	}
+
+	.markdown-content p {
+		color: #fff; /* Text color for the content */
+		font-size: 16px; /* Adjust the font size as needed */
+		line-height: 1.4; /* Adjust the line height as needed */
+	}
 </style>
-
-
