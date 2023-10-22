@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { fade } from 'svelte/transition';
-	export let project = null;
+	export let project: { content: string } | null = null;
 	export let closeModal = () => {};
 
 	import MarkdownIt from 'markdown-it';
@@ -9,8 +9,28 @@
 	$: htmlContent = project ? md.render(project.content) : '';
 </script>
 
-<div class="modal" on:click={closeModal} transition:fade={{ duration: 100 }}>
-	<div class="modal-content" on:click={(e) => e.stopPropagation()}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+
+<div
+	class="modal"
+	on:click={closeModal}
+	transition:fade={{ duration: 100 }}
+	role="button"
+	tabindex="0"
+	aria-label="Close modal"
+>
+	<div
+		class="modal-content"
+		on:click={(e) => e.stopPropagation()}
+		on:keydown={(event) => {
+			if (event.key === 'Escape') {
+				closeModal();
+			}
+		}}
+		role="dialog"
+		aria-modal="true"
+	>
 		<button on:click={closeModal} class="close-btn">X</button>
 		{#if project}
 			<div class="markdown-content">
@@ -23,14 +43,14 @@
 <style>
 	.markdown-content {
 		padding: 5rem;
-        padding-top: 2rem;
+		padding-top: 2rem;
 	}
-    @media (max-width: 768px) {
-    .markdown-content {
-      /* Adjust padding for mobile screens */
-      padding: 1rem;
-    }
-  }
+	@media (max-width: 768px) {
+		.markdown-content {
+			/* Adjust padding for mobile screens */
+			padding: 1rem;
+		}
+	}
 	/* Modal Overlay */
 	.modal {
 		position: fixed;
@@ -117,22 +137,5 @@
 		box-shadow: 0 0 0 2px rgba(224, 224, 224, 0.6); /* Custom focus ring */
 	}
 
-	/* Modal Content Text */
-	h3,
-	p {
-		color: #e0e0e0; /* Light gray for the text */
-		margin: 0; /* Remove default margins for a cleaner look */
-	}
 
-	h3 {
-		margin-bottom: 10px; /* Add some spacing between the title and content */
-	}
-
-	/* Project Image Inside the Modal */
-	.project-image {
-		max-width: 100%; /* Ensure the image doesn't overflow the modal */
-		margin-top: 10px; /* Add some spacing above the image */
-	}
-
-    
 </style>
