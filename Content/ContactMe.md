@@ -11,4 +11,4 @@ My email:
 		color: #ff2079; /* Adjust the text color as needed */
 		/* Add any other styles you want */
 	}
-</style>
+</style> 
