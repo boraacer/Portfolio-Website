@@ -6,7 +6,7 @@
 	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
 
 	async function fetchContactContent() {
-		const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/About.md`;
+		const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/about.md`;
 		try {
 			const response = await axios.get(url);
 			contactContent = snarkdown(response.data);
