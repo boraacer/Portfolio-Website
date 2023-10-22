@@ -88,6 +88,7 @@
 					fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
 				skillIcons[fileNameWithoutExtension] = fileUrl;
 			}
+			console.log(skillIcons)
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(error.message);
