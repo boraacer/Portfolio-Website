@@ -1,7 +1,7 @@
 
 ## Contact Me
 
-### <admin@boraacer.dev>
+<admin@boraacer.dev>
 
 <style>
 	section {
