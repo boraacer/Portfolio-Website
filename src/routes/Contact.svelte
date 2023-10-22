@@ -1,16 +1,18 @@
 <script lang="ts">
 	import axios from 'axios';
-	import snarkdown from 'snarkdown';
+	import markdownIt from 'markdown-it';
 	import { onMount } from 'svelte';
 
 	let contactContent: string = '';
 	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
+	const md = markdownIt();
 
 	async function fetchContactContent() {
 		const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/ContactMe.md`;
 		try {
 			const response = await axios.get(url);
-			contactContent = snarkdown(response.data);
+			contactContent = md.render(response.data);
+			console.log(contactContent);
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(`Error fetching the contact content: ${error.message}`);
@@ -35,6 +37,7 @@
 	</div>
 </section>
 
+
 <style>
 	section {
 		background-color: rgba(0, 0, 0, 0.7);
@@ -43,6 +46,7 @@
 		margin-bottom: 1rem;
 		border-radius: 10px;
 	}
+
 
 	.markdown-content p {
 		color: #fff; /* Text color for the content */
