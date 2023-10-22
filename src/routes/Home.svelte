@@ -1,4 +1,6 @@
 <script lang="ts">
+	import axios from 'axios';
+
 	import { onMount } from 'svelte';
 
 	const textToType =
@@ -24,6 +26,20 @@
 
 		typeText();
 	});
+
+	let skills: string[] = [];
+
+	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
+	const SKILLS_TXT_URL = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/skills.txt`;
+
+	onMount(async () => {
+		try {
+			const response = await axios.get(SKILLS_TXT_URL);
+			skills = response.data.split('\n').filter((skill: string) => skill.trim() !== '');
+		} catch (error) {
+			console.error('Error fetching skills:', error);
+		}
+	});
 </script>
 
 <div class="slide-in">
@@ -45,6 +61,13 @@
 				alt="Bora Acer's Top Languages"
 			/>
 		</div>
+	</section>
+
+	<section id="skills" class="slide-in">
+		<h2>Skills</h2>
+		{#each skills as skill (skill)}
+			<img src={`./assets/${skill.toLowerCase()}.svg`} alt={skill} />
+		{/each}
 	</section>
 </div>
 

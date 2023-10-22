@@ -133,48 +133,6 @@
 			}
 		}
 	})();
-	(async () => {
-		try {
-			const folderContent = await getFolderContent(
-				'boraacer',
-				'Portfolio-Website',
-				'Content/Projects'
-			);
-			for (const file of folderContent) {
-				const rawContent = await getFileContent(file);
-				const parsedContent = parseMarkdownContent(rawContent);
-
-				projects = [...projects, parsedContent];
-			}
-		} catch (error) {
-			if (error instanceof Error) {
-				console.error(error.message);
-			} else {
-				console.error('An unknown error occurred:', error);
-			}
-		}
-	})();
-	(async () => {
-		try {
-			const folderContent = await getFolderContent(
-				'boraacer',
-				'Portfolio-Website',
-				'Content/Projects'
-			);
-			for (const file of folderContent) {
-				const rawContent = await getFileContent(file);
-				const parsedContent = parseMarkdownContent(rawContent);
-
-				projects = [...projects, parsedContent];
-			}
-		} catch (error) {
-			if (error instanceof Error) {
-				console.error(error.message);
-			} else {
-				console.error('An unknown error occurred:', error);
-			}
-		}
-	})();
 </script>
 
 {#if selectedProject}
