@@ -6,7 +6,7 @@
 	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
 
 	async function fetchContactContent() {
-		const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/ContactMe.md`;
+        const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/ContactMe.md`;
 		try {
 			const response = await axios.get(url);
 			contactContent = snarkdown(response.data);
@@ -23,9 +23,9 @@
 </script>
 
 <section id="contact" class="slide-in">
-	<h2>Contact Me</h2>
-	{@html contactContent}
-	<!-- Render the parsed markdown content -->
+	<div class="markdown-content">
+		{@html contactContent}
+	</div>
 </section>
 
 <style>
@@ -37,4 +37,5 @@
 		border-radius: 10px;
 	}
 </style>
+
 

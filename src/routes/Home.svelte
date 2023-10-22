@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
 	const textToType =
-		"My name is Bora Acer.<br>I am an individual deeply invested in the fields of Computer Science and Engineering.";
+		'My name is Bora Acer.<br>I am an individual deeply invested in the fields of Computer Science and Engineering.';
 	let currentIndex = 0;
 	let typedOutput = ''; // New reactive variable
 
@@ -31,32 +31,36 @@
 		<div class="terminal">
 			<div id="typed-output">
 				{@html typedOutput}
-                <span class="cursor" />
+				<span class="cursor" />
 			</div>
-
-			
 		</div>
 		<p />
 	</div>
 
 	<section id="home" class="slide-in">
 		<h2>Home</h2>
-		<img
-			src="https://github-readme-stats.vercel.app/api/top-langs/?username=boraacer&size_weight=1&count_weight=1&theme=radical"
-			alt="Bora Acer's Top Languages"
-		/>
+		<div class="image-container">
+			<img
+				src="https://github-readme-stats.vercel.app/api/top-langs/?username=boraacer&size_weight=1&count_weight=1&theme=radical"
+				alt="Bora Acer's Top Languages"
+			/>
+		</div>
 	</section>
 </div>
 
 <style>
-section {
-    background-color: rgba(0, 0, 0, 0.7);
-    border: 2px solid #0df2c9; /* Neon cyan border */
-    padding: 2rem;
-    margin-bottom: 1rem;
-    border-radius: 10px; 
-	
-}
+	.image-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	section {
+		background-color: rgba(0, 0, 0, 0.7);
+		border: 2px solid #0df2c9; /* Neon cyan border */
+		padding: 2rem;
+		margin-bottom: 1rem;
+		border-radius: 10px;
+	}
 	h2 {
 		color: #ff2079; /* Neon pink for headings */
 	}
@@ -81,38 +85,38 @@ section {
 		font-family: Consolas, Monaco, 'Courier New', monospace;
 		font-size: 1.5rem;
 	}
-    .terminal {
-        background-color: #000;
-        color: #0f0;
-        padding: 10px;
-        font-size: 1.2rem;
-        font-family: 'Terminus', 'Courier New', monospace;
-        overflow: hidden;
-        white-space: pre-wrap; /* set the white-space property to pre-wrap */
-        border-radius: 5px;
-        position: relative;
-    }
+	.terminal {
+		background-color: #000;
+		color: #0f0;
+		padding: 10px;
+		font-size: 1.2rem;
+		font-family: 'Terminus', 'Courier New', monospace;
+		overflow: hidden;
+		white-space: pre-wrap; /* set the white-space property to pre-wrap */
+		border-radius: 5px;
+		position: relative;
+	}
 
-    .cursor {
-        background-color: #0f0;
-        animation: blink 1s infinite;
-        width: 10px;
-        height: 1em;
-        display: inline-block;
-    }
+	.cursor {
+		background-color: #0f0;
+		animation: blink 1s infinite;
+		width: 10px;
+		height: 1em;
+		display: inline-block;
+	}
 
-    @keyframes blink {
-        0% {
-            opacity: 1;
-        }
-        49% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
+	@keyframes blink {
+		0% {
+			opacity: 1;
+		}
+		49% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
 </style>

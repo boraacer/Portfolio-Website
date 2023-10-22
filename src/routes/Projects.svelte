@@ -132,7 +132,8 @@
 				console.error('An unknown error occurred:', error);
 			}
 		}
-	})();	(async () => {
+	})();
+	(async () => {
 		try {
 			const folderContent = await getFolderContent(
 				'boraacer',
@@ -152,7 +153,8 @@
 				console.error('An unknown error occurred:', error);
 			}
 		}
-	})();	(async () => {
+	})();
+	(async () => {
 		try {
 			const folderContent = await getFolderContent(
 				'boraacer',
@@ -183,7 +185,7 @@
 	<h2>My Projects</h2>
 	{#each projects as project}
 		<div
-			class="project"
+			class="project slide-in"
 			on:click={() => openModal(project)}
 			on:keydown={(event) => {
 				if (event.key === 'Enter' || event.key === ' ') {
@@ -210,8 +212,12 @@
 						{/if}
 					{/each}
 				</div>
+			</div>
+			<div class="project-content-wrapper">
 				<p>{project.content}</p>
 			</div>
+			<div class="overlay" />
+
 			<img src={project.imageURL} alt={project.name} class="project-image" />
 		</div>
 	{/each}
@@ -251,8 +257,71 @@
 		flex-grow: 1;
 		margin-right: 20px; /* space between the content and the image */
 		z-index: 1; /* ensure content is above the image */
+		cursor: pointer;
 	}
 
+	.project-content-wrapper {
+		position: relative;
+		max-width: 300px;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		cursor: pointer;
+		background-color: black;
+	}
+
+	.project-content::after {
+		content: '';
+		position: absolute;
+		bottom: 50px;
+		left: 0;
+		right: 0;
+		height: 200px;
+		background: linear-gradient(transparent 0%, transparent 0%, black 100%);
+		pointer-events: none;
+		z-index: 1;
+		cursor: pointer;
+	}
+	@media (max-width: 768px) {
+
+		.project {
+			position: relative; /* set position context for the absolutely positioned .technologies */
+			/* Remove flex properties if they exist */
+			border: 1px solid #eee;
+			padding: 1rem;
+			margin: 1rem 0;
+			border-radius: 10px;
+			max-width: 600px;
+			margin: 0 auto;
+			margin-bottom: 2rem;
+			overflow: hidden;
+			height: 250px;
+		}
+		.project-content-wrapper {
+			display: none; /* Hide the project description on mobile */
+		}
+		.project-content::after {
+			display: none;
+		}
+		.overlay {
+			display: none;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 50px; /* adjust as per requirement */
+			background-color: black;
+			z-index: 2; /* to ensure it's below the content */
+		}
+	}
+	.overlay {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 50px; /* adjust as per requirement */
+		background-color: black;
+		z-index: 2; /* to ensure it's below the content */
+	}
 	.project-image {
 		position: absolute; /* absolute positioning */
 		right: 0; /* stretch to the right border */
@@ -262,6 +331,8 @@
 		height: 100%;
 		border-top-right-radius: 0px;
 		border-bottom-right-radius: 0px;
+		z-index: 3;
+		cursor: pointer;
 	}
 
 	.technologies {
@@ -270,6 +341,7 @@
 		left: 10px; /* distance from the left of the .project div */
 		display: flex; /* display icons horizontally */
 		gap: 10px; /* space between icons */
+		z-index: 3;
 	}
 
 	.tech-icon {
