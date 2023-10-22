@@ -1,6 +1,6 @@
 {
     "header": "Cipher Project",
-    "technologies": "Python",
+    "technologies": "Python-Dark",
     "imageURL": "Assets/cipher.jpg"
 } 
 
