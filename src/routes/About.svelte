@@ -23,9 +23,10 @@
 </script>
 
 <section id="contact" class="slide-in">
-	<h2>About</h2>
-	{@html contactContent}
-	<!-- Render the parsed markdown content -->
+    <h2>Contact Me</h2>
+    <div class="markdown-content">
+        {@html contactContent}
+    </div>
 </section>
 
 <style>
@@ -39,4 +40,6 @@
 	h2 {
 		color: #ff2079; /* Neon pink for headings */
 	}
+
+	
 </style>
