@@ -1,5 +1,16 @@
 <script lang="ts">
 	import axios from 'axios';
+	import Modal from './Modal.svelte';
+
+	let selectedProject: null = null;
+
+	function openModal(project: any) {
+		selectedProject = project;
+	}
+
+	function closeModal() {
+		selectedProject = null;
+	}
 
 	type Project = {
 		name: string;
@@ -121,13 +132,68 @@
 				console.error('An unknown error occurred:', error);
 			}
 		}
+	})();	(async () => {
+		try {
+			const folderContent = await getFolderContent(
+				'boraacer',
+				'Portfolio-Website',
+				'Content/Projects'
+			);
+			for (const file of folderContent) {
+				const rawContent = await getFileContent(file);
+				const parsedContent = parseMarkdownContent(rawContent);
+
+				projects = [...projects, parsedContent];
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(error.message);
+			} else {
+				console.error('An unknown error occurred:', error);
+			}
+		}
+	})();	(async () => {
+		try {
+			const folderContent = await getFolderContent(
+				'boraacer',
+				'Portfolio-Website',
+				'Content/Projects'
+			);
+			for (const file of folderContent) {
+				const rawContent = await getFileContent(file);
+				const parsedContent = parseMarkdownContent(rawContent);
+
+				projects = [...projects, parsedContent];
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(error.message);
+			} else {
+				console.error('An unknown error occurred:', error);
+			}
+		}
 	})();
 </script>
+
+{#if selectedProject}
+	<Modal project={selectedProject} {closeModal} />
+{/if}
 
 <section id="projects" class="slide-in">
 	<h2>My Projects</h2>
 	{#each projects as project}
-		<div class="project">
+		<div
+			class="project"
+			on:click={() => openModal(project)}
+			on:keydown={(event) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					openModal(project);
+				}
+			}}
+			role="button"
+			tabindex="0"
+			aria-label="Open project details"
+		>
 			<div class="project-content">
 				<h3>{project.name}</h3>
 				<div class="technologies">
