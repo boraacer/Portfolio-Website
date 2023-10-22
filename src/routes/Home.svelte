@@ -7,10 +7,9 @@
 	let currentIndex = 0;
 	let typedOutput = ''; // New reactive variable
 
-	onMount(async () => {
+	onMount(() => {
 		function typeText() {
 			if (currentIndex < textToType.length) {
-				// If the current segment is '<br>', append the whole tag at once
 				if (textToType.substr(currentIndex, 4) === '<br>') {
 					typedOutput += '<br>';
 					currentIndex += 4;
@@ -18,36 +17,10 @@
 					typedOutput += textToType[currentIndex];
 					currentIndex++;
 				}
-				setTimeout(typeText, 75); // adjust the timeout for typing speed
+				setTimeout(typeText, 75);
 			}
 		}
 		typeText();
-
-		// Fetching skills from skills.txt
-		try {
-			const response = await axios.get(SKILLS_TXT_URL);
-			if (response.status === 200) {
-				skills = response.data.split('\n').filter((skill: string) => skill.trim() !== '');
-			} else {
-				throw new Error(`Error fetching skills.txt: ${response.status} - ${response.statusText}`);
-			}
-		} catch (error) {
-			if (error instanceof Error) {
-				console.error(`Error fetching skills.txt: ${error.message}`);
-			} else {
-				console.error('An unknown error occurred:', error);
-			}
-		}
-
-		// Filtering SVGs based on the skills list
-		const folderContent = await getFolderContent('tandpfun', 'skill-icons', 'icons');
-		for (const fileUrl of folderContent) {
-			const fileNameWithoutExtension = fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
-			if (skills.includes(fileNameWithoutExtension)) {
-				skillIcons[fileNameWithoutExtension] = fileUrl;
-			}
-		}
-		console.log(skillIcons);
 	});
 
 	let skills: string[] = [];
@@ -63,31 +36,71 @@
 		path: string
 	): Promise<any[]> {
 		const url = `${GITHUB_API_URL}/${repoOwner}/${repoName}/contents/${path}`;
-
 		try {
 			const response = await axios.get(url);
 			if (response.status === 200) {
 				const fileUrls: string[] = response.data
 					.filter((item: any) => item.type === 'file')
 					.map((file: any) => {
-						// Transform the URL to point to the raw content
 						return `${GITHUB_RAW_URL}/${repoOwner}/${repoName}/main/${file.path}`;
 					});
 				return fileUrls;
 			} else {
-				throw new Error(`Error fetching the folder content: ${response.status} - ${response.statusText}`);
+				throw new Error(
+					`Error fetching the folder content: ${response.status} - ${response.statusText}`
+				);
 			}
 		} catch (error) {
-			// Check if the error is an instance of Error
 			if (error instanceof Error) {
 				throw new Error(`Error fetching the folder content: ${error.message}`);
 			} else {
-				throw error; // re-throw the error unchanged
+				throw error;
 			}
 		}
 	}
-</script>
 
+	async function getSkillsList(): Promise<string[]> {
+		try {
+			const response = await axios.get(SKILLS_TXT_URL);
+			if (response.status === 200) {
+				return response.data.split('\n').filter(Boolean); // Split by newline and filter out empty strings
+			} else {
+				throw new Error(`Error fetching skills list: ${response.status} - ${response.statusText}`);
+			}
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	(async () => {
+		try {
+			skills = await getSkillsList();
+
+			const folderContent = await getFolderContent('tandpfun', 'skill-icons', 'icons');
+
+			for (const fileUrl of folderContent) {
+				let fileNameWithoutExtension =
+					fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
+
+				// Check if the filename ends with "-Dark"
+				if (fileNameWithoutExtension.toLowerCase().endsWith('-dark')) {
+					fileNameWithoutExtension = fileNameWithoutExtension.slice(0, -5);
+				}
+
+				// Only add to skillIcons if the skill is in the skills list
+				if (skills.includes(fileNameWithoutExtension)) {
+					skillIcons[fileNameWithoutExtension] = fileUrl;
+				}
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(error.message);
+			} else {
+				console.error('An unknown error occurred:', error);
+			}
+		}
+	})();
+</script>
 
 <div class="slide-in">
 	<div class="cyberpunk-container">
@@ -100,13 +113,6 @@
 		<p />
 	</div>
 
-	<section id="skills" class="slide-in">
-		<h2>Skills</h2>
-		{#each Object.keys(skillIcons) as skill (skill)}
-			<img src={skillIcons[skill]} alt={skill} />
-		{/each}
-	</section>
-
 	<section id="home" class="slide-in">
 		<h2>Home</h2>
 		<div class="image-container">
@@ -114,6 +120,17 @@
 				src="https://github-readme-stats.vercel.app/api/top-langs/?username=boraacer&size_weight=1&count_weight=1&theme=radical"
 				alt="Bora Acer's Top Languages"
 			/>
+		</div>
+	</section>
+	<section id="skills" class="slide-in">
+		<h2>Skills</h2>
+		<div class="skills-container">
+			{#each Object.keys(skillIcons) as skill (skill)}
+				<div class="tooltip-container">
+					<img class="skill-icon" src={skillIcons[skill]} alt={skill} />
+					<span class="tooltip">{skill}</span>
+				</div>
+			{/each}
 		</div>
 	</section>
 </div>
@@ -124,6 +141,19 @@
 		justify-content: center;
 		align-items: center;
 	}
+	.skills-container {
+		display: flex;
+		flex-wrap: wrap; /* Allows icons to wrap to the next line if there are many of them */
+		justify-content: center; /* Horizontally centers the icons */
+		align-items: center; /* Vertically centers the icons */
+		gap: 10px; /* Provides space between the icons */
+	}
+
+	.skill-icon {
+		width: 100px; /* Adjust as needed */
+		height: 100px; /* Adjust as needed */
+	}
+
 	section {
 		background-color: rgba(0, 0, 0, 0.7);
 		border: 2px solid #0df2c9; /* Neon cyan border */
@@ -188,5 +218,29 @@
 		100% {
 			opacity: 0;
 		}
+	}
+
+	.tooltip-container {
+		position: relative;
+		display: inline-block;
+	}
+
+	.tooltip {
+		position: absolute;
+		bottom: 100%; /* Positioned just above the top of the icon */
+		left: 50%; /* Centered horizontally relative to the icon */
+		transform: translateX(-50%); /* Adjusts the tooltip's position to be truly centered */
+		background-color: #555; /* Background color for the tooltip */
+		color: white;
+		padding: 5px 10px;
+		border-radius: 5px;
+		opacity: 0; /* Hidden by default */
+		transition: opacity 0.3s;
+		pointer-events: none; /* Makes sure the tooltip doesn't interfere with other interactions */
+		z-index: 1; /* Ensures the tooltip is displayed above other elements */
+	}
+
+	.tooltip-container:hover .tooltip {
+		opacity: 1; /* Display the tooltip when the container is hovered */
 	}
 </style>

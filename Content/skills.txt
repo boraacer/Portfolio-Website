@@ -2,10 +2,10 @@ Python
 CPP
 Rust
 Java
-Golang
+GoLang
 Dart
 TypeScript
-Javascript
+JavaScript
 VSCode
 AndroidStudio
 Flutter
@@ -13,10 +13,9 @@ Flask
 Tensorflow
 PyTorch
 Svelte
-Nodejs
+NodeJS
 Nginx
 Linux
-Android
 Docker
 PostgreSQL
 MongoDB
