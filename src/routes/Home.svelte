@@ -1,6 +1,5 @@
 <script lang="ts">
 	import axios from 'axios';
-
 	import { onMount } from 'svelte';
 
 	const textToType =
@@ -8,7 +7,7 @@
 	let currentIndex = 0;
 	let typedOutput = ''; // New reactive variable
 
-	onMount(() => {
+	onMount(async () => {
 		function typeText() {
 			if (currentIndex < textToType.length) {
 				// If the current segment is '<br>', append the whole tag at once
@@ -19,28 +18,76 @@
 					typedOutput += textToType[currentIndex];
 					currentIndex++;
 				}
-
 				setTimeout(typeText, 75); // adjust the timeout for typing speed
 			}
 		}
-
 		typeText();
+
+		// Fetching skills from skills.txt
+		try {
+			const response = await axios.get(SKILLS_TXT_URL);
+			if (response.status === 200) {
+				skills = response.data.split('\n').filter((skill: string) => skill.trim() !== '');
+			} else {
+				throw new Error(`Error fetching skills.txt: ${response.status} - ${response.statusText}`);
+			}
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(`Error fetching skills.txt: ${error.message}`);
+			} else {
+				console.error('An unknown error occurred:', error);
+			}
+		}
+
+		// Filtering SVGs based on the skills list
+		const folderContent = await getFolderContent('tandpfun', 'skill-icons', 'icons');
+		for (const fileUrl of folderContent) {
+			const fileNameWithoutExtension = fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
+			if (skills.includes(fileNameWithoutExtension)) {
+				skillIcons[fileNameWithoutExtension] = fileUrl;
+			}
+		}
+		console.log(skillIcons);
 	});
 
 	let skills: string[] = [];
-
+	const GITHUB_API_URL = 'https://api.github.com/repos';
 	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
 	const SKILLS_TXT_URL = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/skills.txt`;
 
-	onMount(async () => {
+	let skillIcons: { [key: string]: string } = {};
+
+	async function getFolderContent(
+		repoOwner: string,
+		repoName: string,
+		path: string
+	): Promise<any[]> {
+		const url = `${GITHUB_API_URL}/${repoOwner}/${repoName}/contents/${path}`;
+
 		try {
-			const response = await axios.get(SKILLS_TXT_URL);
-			skills = response.data.split('\n').filter((skill: string) => skill.trim() !== '');
+			const response = await axios.get(url);
+			if (response.status === 200) {
+				const fileUrls: string[] = response.data
+					.filter((item: any) => item.type === 'file')
+					.map((file: any) => {
+						// Transform the URL to point to the raw content
+						return `${GITHUB_RAW_URL}/${repoOwner}/${repoName}/main/${file.path}`;
+					});
+				return fileUrls;
+			} else {
+				throw new Error(`Error fetching the folder content: ${response.status} - ${response.statusText}`);
+			}
 		} catch (error) {
-			console.error('Error fetching skills:', error);
+			// Check if the error is an instance of Error
+			if (error instanceof Error) {
+				throw new Error(`Error fetching the folder content: ${error.message}`);
+			} else {
+				throw error; // re-throw the error unchanged
+			}
 		}
-	});
+	}
 </script>
+
 
 <div class="slide-in">
 	<div class="cyberpunk-container">
@@ -53,6 +100,13 @@
 		<p />
 	</div>
 
+	<section id="skills" class="slide-in">
+		<h2>Skills</h2>
+		{#each Object.keys(skillIcons) as skill (skill)}
+			<img src={skillIcons[skill]} alt={skill} />
+		{/each}
+	</section>
+
 	<section id="home" class="slide-in">
 		<h2>Home</h2>
 		<div class="image-container">
@@ -61,13 +115,6 @@
 				alt="Bora Acer's Top Languages"
 			/>
 		</div>
-	</section>
-
-	<section id="skills" class="slide-in">
-		<h2>Skills</h2>
-		{#each skills as skill (skill)}
-			<img src={`./assets/${skill.toLowerCase()}.svg`} alt={skill} />
-		{/each}
 	</section>
 </div>
 

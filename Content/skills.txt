@@ -22,6 +22,7 @@ PostgreSQL
 MongoDB
 RaspberryPi
 Github
+Git
 Arduino
 HTML
 CSS
