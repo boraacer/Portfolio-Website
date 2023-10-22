@@ -77,7 +77,9 @@
 			imageURL: baseURL + json.imageURL // Adjust the image URL to point to the right location
 		};
 	}
-
+	function getCleanTechName(techName: string): string {
+		return techName.replace('-Light', '').replace('-Dark', '');
+	}
 	// For the skill-icons repository
 	(async () => {
 		try {
@@ -88,7 +90,7 @@
 					fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
 				skillIcons[fileNameWithoutExtension] = fileUrl;
 			}
-			console.log(skillIcons)
+			console.log(skillIcons);
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(error.message);
@@ -135,7 +137,8 @@
 								<img src={skillIcons[tech]} alt={tech} class="tech-icon" />
 								<div class="tech-tooltip">
 									<img src={skillIcons[tech]} alt={tech} class="tech-tooltip-icon" />
-									<p>{tech}</p>
+									<p>{getCleanTechName(tech)}</p>
+									<!-- Use the function here -->
 								</div>
 							</div>
 						{/if}
@@ -247,37 +250,37 @@
 	}
 
 	@media (max-width: 768px) {
-    .project {
-        position: relative;
-        padding: 0; /* Remove padding to allow the image to cover the entire div */
-    }
+		.project {
+			position: relative;
+			padding: 0; /* Remove padding to allow the image to cover the entire div */
+		}
 
-    .project-content {
-        position: absolute; /* Position the content box above the image */
-        top: 0;
-        left: 0;
-        width: 100%; /* Cover the entire width of the .project div */
-        height: 100%; /* Cover the entire height of the .project div */
-        background-color: rgba(0, 0, 0, 0.5); /* Translucent white background */
-        padding: 1rem; /* Padding inside the content box */
-        box-sizing: border-box; /* Include padding and border in width/height calculations */
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Center content vertically */
-    }
+		.project-content {
+			position: absolute; /* Position the content box above the image */
+			top: 0;
+			left: 0;
+			width: 100%; /* Cover the entire width of the .project div */
+			height: 100%; /* Cover the entire height of the .project div */
+			background-color: rgba(0, 0, 0, 0.5); /* Translucent white background */
+			padding: 1rem; /* Padding inside the content box */
+			box-sizing: border-box; /* Include padding and border in width/height calculations */
+			display: flex;
+			flex-direction: column;
+			justify-content: center; /* Center content vertically */
+		}
 
-    .project-image {
-        position: absolute; /* Position the image to cover the entire .project div */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover; /* Scale the image to cover the entire div */
-        z-index: -1; /* Place the image behind the content */
-    }
+		.project-image {
+			position: absolute; /* Position the image to cover the entire .project div */
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover; /* Scale the image to cover the entire div */
+			z-index: -1; /* Place the image behind the content */
+		}
 
-    .technologies {
-        margin-top: 10px; /* Add some spacing between the content and the technologies */
-    }
-}
+		.technologies {
+			margin-top: 10px; /* Add some spacing between the content and the technologies */
+		}
+	}
 </style>

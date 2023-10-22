@@ -1,3 +1,33 @@
+<script lang="ts">
+	import axios from 'axios';
+	import snarkdown from 'snarkdown';
+
+	let contactContent: string = '';
+	const GITHUB_RAW_URL = 'https://raw.githubusercontent.com';
+
+	async function fetchContactContent() {
+		const url = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/About.md`;
+		try {
+			const response = await axios.get(url);
+			contactContent = snarkdown(response.data);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(`Error fetching the contact content: ${error.message}`);
+			} else {
+				console.error('An unknown error occurred:', error);
+			}
+		}
+	}
+
+	fetchContactContent(); // Invoke the function to fetch the content
+</script>
+
+<section id="contact" class="slide-in">
+	<h2>About</h2>
+	{@html contactContent}
+	<!-- Render the parsed markdown content -->
+</section>
+
 <style>
 	section {
 		background-color: rgba(0, 0, 0, 0.7);
@@ -6,15 +36,7 @@
 		margin-bottom: 1rem;
 		border-radius: 10px;
 	}
-    h2 {
-        color: #ff2079; /* Neon pink for headings */
-    }
-
-
+	h2 {
+		color: #ff2079; /* Neon pink for headings */
+	}
 </style>
-
-
-<section id="about" class="slide-in">
-    <h2>About Me</h2>
-    <p>Hello! I'm a passionate developer with experience in various technologies. I love building things and learning new skills.</p>
-</section>
