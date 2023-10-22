@@ -68,8 +68,7 @@
 
 		const modifiedContent = content.substring(jsonEnd + 2).trim(); // Everything after the JSON data
 
-		const baseURL =
-			`${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/Projects/`;
+		const baseURL = `${GITHUB_RAW_URL}/boraacer/Portfolio-Website/main/Content/Projects/`;
 
 		return {
 			name: json.header || '',
@@ -89,7 +88,6 @@
 					fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
 				skillIcons[fileNameWithoutExtension] = fileUrl;
 			}
-			console.log(skillIcons);
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(error.message);
@@ -113,7 +111,6 @@
 
 				projects = [...projects, parsedContent];
 			}
-			console.log(projects);
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(error.message);
@@ -130,7 +127,6 @@
 		<div class="project">
 			<div class="project-content">
 				<h3>{project.name}</h3>
-				<h4>Technologies:</h4>
 				<div class="technologies">
 					{#each project.technologies.split(',').map((tech) => tech.trim()) as tech}
 						{#if skillIcons[tech]}
@@ -163,10 +159,14 @@
 	h2 {
 		color: #ff2079; /* Neon pink for headings */
 	}
+
+	section > :not(.project) {
+		margin: 10px;
+		padding: 10px;
+	}
 	.project {
-		display: flex;
-		align-items: start; /* align children at the top */
-		justify-content: space-between; /* space between the content and the image */
+		position: relative; /* set position context for the absolutely positioned .technologies */
+		/* Remove flex properties if they exist */
 		border: 1px solid #eee;
 		padding: 1rem;
 		margin: 1rem 0;
@@ -174,23 +174,32 @@
 		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 2rem;
+		overflow: hidden;
+		height: 250px;
 	}
-
 	.project-content {
-		flex: 1; /* take up the maximum available width */
+		flex-grow: 1;
 		margin-right: 20px; /* space between the content and the image */
+		z-index: 1; /* ensure content is above the image */
 	}
 
 	.project-image {
-		max-width: 150px; /* adjust as needed */
-		height: auto;
-		align-self: center; /* center the image vertically */
+		position: absolute; /* absolute positioning */
+		right: 0; /* stretch to the right border */
+		top: 0; /* stretch to the top border */
+		bottom: 0; /* stretch to the bottom border */
+		width: auto;
+		height: 100%;
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
 	}
 
 	.technologies {
-		display: flex;
-		align-items: center;
-		gap: 1rem; /* space between icons */
+		position: absolute;
+		bottom: 10px; /* distance from the bottom of the .project div */
+		left: 10px; /* distance from the left of the .project div */
+		display: flex; /* display icons horizontally */
+		gap: 10px; /* space between icons */
 	}
 
 	.tech-icon {
@@ -207,8 +216,7 @@
 		align-items: center; /* vertically align items */
 		gap: 5px; /* space between icon and text */
 		position: absolute;
-		top: 50%; /* adjust to center tooltip vertically relative to the icon */
-		left: -60px; /* move tooltip to the left of the icon */
+		top: 0%; /* adjust to center tooltip vertically relative to the icon */
 		transform: translateY(-50%); /* vertically center tooltip */
 		background-color: rgba(0, 0, 0, 0.9);
 		color: white;
@@ -219,6 +227,7 @@
 		transition: opacity 0.3s ease;
 		pointer-events: none;
 		z-index: 1000;
+		left: 35px;
 	}
 	.tech-tooltip-icon {
 		width: 48px; /* adjust as needed */
@@ -228,4 +237,46 @@
 	.tech-wrapper:hover .tech-tooltip {
 		opacity: 1;
 	}
+
+	@media (max-width: 768px) {
+		.tech-wrapper:hover .tech-tooltip {
+			opacity: 0 !important; /* hide the tooltip */
+			pointer-events: none; /* ensure it doesn't interfere with other elements */
+		}
+	}
+
+	@media (max-width: 768px) {
+    .project {
+        position: relative;
+        padding: 0; /* Remove padding to allow the image to cover the entire div */
+    }
+
+    .project-content {
+        position: absolute; /* Position the content box above the image */
+        top: 0;
+        left: 0;
+        width: 100%; /* Cover the entire width of the .project div */
+        height: 100%; /* Cover the entire height of the .project div */
+        background-color: rgba(0, 0, 0, 0.5); /* Translucent white background */
+        padding: 1rem; /* Padding inside the content box */
+        box-sizing: border-box; /* Include padding and border in width/height calculations */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content vertically */
+    }
+
+    .project-image {
+        position: absolute; /* Position the image to cover the entire .project div */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Scale the image to cover the entire div */
+        z-index: -1; /* Place the image behind the content */
+    }
+
+    .technologies {
+        margin-top: 10px; /* Add some spacing between the content and the technologies */
+    }
+}
 </style>
