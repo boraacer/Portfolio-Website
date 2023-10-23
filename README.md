@@ -4,14 +4,13 @@
 
 ### Build and Preview
 
-> node run build
-> node run preview
+`node run build`
+`node run preview`
 
 ### Develpment Preview
 
-> node run dev
-
+`node run dev`
 
 ### Compile to Docker
 
-> docker buildx build --platform linux/amd64 -t boracer/bora_acer_portfolio:latest .
+`docker buildx build --platform linux/amd64 -t boracer/bora_acer_portfolio:latest .`
