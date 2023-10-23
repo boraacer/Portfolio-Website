@@ -14,7 +14,6 @@
 	  try {
 		const response = await axios.get(url);
 		contactContent = md.render(response.data);
-		console.log(contactContent);
 	  } catch (error) {
 		if (error instanceof Error) {
 		  console.error(`Error fetching the contact content: ${error.message}`);

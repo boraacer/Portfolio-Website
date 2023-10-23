@@ -52,7 +52,6 @@
 			});
 
 			if (response.ok) {
-				console.log('Access logged successfully');
 			} else {
 				console.error('Failed to log access');
 			}

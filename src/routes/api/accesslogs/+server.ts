@@ -4,7 +4,11 @@ const { Pool } = pkg;
 import fs from 'fs';
 import path from 'path';
 
-const configPath = path.resolve(process.cwd(), 'databaseConfig.json');
+const defaultConfigPath = path.resolve(process.cwd(), 'databaseConfig.json');
+const fallbackConfigPath = '/tmp/config.json';
+
+const configPath = fs.existsSync(defaultConfigPath) ? defaultConfigPath : fallbackConfigPath;
+
 const rawConfig = fs.readFileSync(configPath, 'utf-8');
 const dbConfig = JSON.parse(rawConfig);
 
@@ -63,9 +67,9 @@ export const POST: RequestHandler = async (event) => {
 
 		const ip_address = requestBody['ip_address'] || 'unknown';
 
-        if (!isValidIPv4(ip_address)) {
-            return new Response('Invalid IP address', { status: 400 });
-        }
+		if (!isValidIPv4(ip_address)) {
+			return new Response('Invalid IP address', { status: 400 });
+		}
 
 		const user_agent = event.request.headers.get('User-Agent');
 		const time_accessed = new Date().toISOString();

@@ -21,10 +21,25 @@ RUN npm run build
 # Delete source code files that were used to build the app that are no longer needed
 RUN rm -rf src/ static/ docker-compose.yml
 
+RUN rm -rf Content
+RUN rm databaseConfig.json
+RUN rm vite.config.ts.timestamp-*
+
+RUN echo '#!/bin/sh' > /app/startup.sh && \
+    echo 'echo "{" >> /tmp/config.json' >> /app/startup.sh && \
+    echo 'echo "\"user\": \"$PGUSER\"," >> /tmp/config.json' >> /app/startup.sh && \
+    echo 'echo "\"host\": \"$PGHOST\"," >> /tmp/config.json' >> /app/startup.sh && \
+    echo 'echo "\"database\": \"$PGDATABASE\"," >> /tmp/config.json' >> /app/startup.sh && \
+    echo 'echo "\"password\": \"$PGPASSWORD\"," >> /tmp/config.json' >> /app/startup.sh && \
+    echo 'echo "\"port\": \"$PGPORT\"" >> /tmp/config.json' >> /app/startup.sh && \
+    echo 'echo "}" >> /tmp/config.json' >> /app/startup.sh && \
+    chmod +x /app/startup.sh
+    
 # The USER instruction sets the user name to use as the default user for the remainder of the current stage
 USER node:node
 
 # This is the command that will be run inside the image when you tell Docker to start the container
-CMD ["node","build/index.js"]
+
+CMD ["/bin/sh", "-c", "/app/startup.sh && node build/index.js"]
 
 EXPOSE 3000

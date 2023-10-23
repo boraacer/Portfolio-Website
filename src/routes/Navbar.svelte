@@ -17,13 +17,11 @@
 	function handleTabClick(tab: string): void {
 		switchTab(tab);
 		isNavOpen = window.innerWidth >= 768;
-		console.log(`Switched to ${tab}`);
 	}
 
 	// Function to toggle the nav state
 	function toggleNav(): void {
 		isNavOpen = !isNavOpen;
-		console.log(`Nav is ${isNavOpen ? 'open' : 'closed'}`);
 	}
 </script>
 

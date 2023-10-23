@@ -101,7 +101,6 @@
 					fileUrl.split('/').pop()?.split('.').slice(0, -1).join('.') || '';
 				skillIcons[fileNameWithoutExtension] = fileUrl;
 			}
-			console.log(skillIcons);
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error(error.message);
@@ -303,8 +302,8 @@
 	}
 
 	.tech-icon {
-		width: 24px; /* adjust as needed */
-		height: 24px; /* adjust as needed */
+		width: 30px; /* adjust as needed */
+		height: 30px; /* adjust as needed */
 	}
 
 	.tech-wrapper {

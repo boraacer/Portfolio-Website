@@ -114,12 +114,49 @@
 	</div>
 
 	<section id="home" class="slide-in">
-		<h2>Home</h2>
 		<div class="image-container">
 			<img
 				src="https://github-readme-stats.vercel.app/api/top-langs/?username=boraacer&size_weight=1&count_weight=1&theme=radical"
 				alt="Bora Acer's Top Languages"
 			/>
+		</div>
+		<div class="social-media-container">
+			<a
+				href="https://www.linkedin.com/in/bora-acer-0a7a72144/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="social-media-link"
+			>
+				<img
+					class="social-media-icon"
+					src="https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons/LinkedIn.svg"
+					alt="LinkedIn"
+				/>
+			</a>
+			<a
+				href="https://github.com/boraacer"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="social-media-link"
+			>
+				<img
+					class="social-media-icon"
+					src="https://github.com/tandpfun/skill-icons/raw/main/icons/Github-Dark.svg"
+					alt="GitHub"
+				/>
+			</a>
+			<a
+				href="https://www.instagram.com/boracer26/"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="social-media-link"
+			>
+				<img
+					class="social-media-icon"
+					src="https://github.com/tandpfun/skill-icons/raw/main/icons/Instagram.svg"
+					alt="Instagram"
+				/>
+			</a>
 		</div>
 	</section>
 	<section id="skills" class="slide-in">
@@ -242,5 +279,27 @@
 
 	.tooltip-container:hover .tooltip {
 		opacity: 1; /* Display the tooltip when the container is hovered */
+	}
+
+	.social-media-container {
+		display: flex;
+		justify-content: right;
+		gap: 20px; /* Spacing between icons */
+	}
+
+	.social-media-link {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.social-media-icon {
+		width: 50px; /* Icon size */
+		height: 50px;
+		fill: #fff; /* Icon color */
+		transition: fill 0.3s; /* Color transition for hover effect */
+	}
+
+	.social-media-link:hover .social-media-icon {
+		fill: #0df2c9; /* Color when hovered */
 	}
 </style>
