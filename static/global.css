@@ -1,0 +1,32 @@
+
+:root {
+    --color-background-light: whitesmoke;
+    --color-background-dark: #111111;
+
+    --primary-background-light: white;
+    --primary-background-dark: #000000;
+
+    
+    --color-text-light: #ffffff;
+    --color-text-dark: #000000;
+
+    --color-primary: #007bff;
+    --color-secondary: #6c757d;
+
+    --color-border-light: black;
+    --color-border-dark: white;
+
+}
+
+body.light {
+    background-color: var(--color-background-light);
+}
+
+body.dark {
+    background-color: var(--color-background-dark);
+}
+
+body {
+    overflow: hidden;
+}
+
